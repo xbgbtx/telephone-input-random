@@ -14,8 +14,11 @@ export class TelephoneInputRandom extends LitElement {
 
   @property({ type: String }) randomValue = '';
 
+  running: boolean;
+
   constructor() {
     super();
+    this.running = true;
     this.__generateNumber();
     window.requestAnimationFrame(() => this.__tick());
   }
@@ -23,7 +26,8 @@ export class TelephoneInputRandom extends LitElement {
   __tick() {
     window.requestAnimationFrame(() => {
       this.__generateNumber();
-      window.requestAnimationFrame(() => this.__tick());
+
+      if (this.running) window.requestAnimationFrame(() => this.__tick());
     });
   }
 
@@ -31,13 +35,22 @@ export class TelephoneInputRandom extends LitElement {
     this.randomValue = `${Math.random()}`;
   }
 
-  __halt() {}
+  __halt() {
+    this.running = false;
+    this.value = this.randomValue;
+  }
 
   render() {
+    if (this.running) {
+      return html`
+        <h1>Please confirm your telephone number:</h1>
+        <p>My Telephone Number is: ${this.randomValue}!</p>
+        <button @click=${this.__halt}>Confirm</button>
+      `;
+    }
     return html`
-      <h1>Please click 'confirm' when your telephone number is shown:</h1>
-      <p>Nr. ${this.randomValue}!</p>
-      <button @click=${this.__halt}>Confirm</button>
+      <h1>Thank you!</h1>
+      <p>Your phone number is: ${this.value}.</p>
     `;
   }
 }
