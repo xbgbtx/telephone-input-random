@@ -14,6 +14,18 @@ export class TelephoneInputRandom extends LitElement {
 
   @property({ type: Number }) counter = 5;
 
+  constructor() {
+    super();
+    window.requestAnimationFrame(() => this.__tick());
+  }
+
+  __tick() {
+    window.requestAnimationFrame(() => {
+      this.__increment();
+      window.requestAnimationFrame(() => this.__tick());
+    });
+  }
+
   __increment() {
     this.counter += 1;
   }
