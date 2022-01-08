@@ -10,30 +10,34 @@ export class TelephoneInputRandom extends LitElement {
     }
   `;
 
-  @property({ type: String }) title = 'Hey there';
+  @property({ type: String }) value = '';
 
-  @property({ type: Number }) counter = 5;
+  @property({ type: String }) randomValue = '';
 
   constructor() {
     super();
+    this.__generateNumber();
     window.requestAnimationFrame(() => this.__tick());
   }
 
   __tick() {
     window.requestAnimationFrame(() => {
-      this.__increment();
+      this.__generateNumber();
       window.requestAnimationFrame(() => this.__tick());
     });
   }
 
-  __increment() {
-    this.counter += 1;
+  __generateNumber() {
+    this.randomValue = `${Math.random()}`;
   }
+
+  __halt() {}
 
   render() {
     return html`
-      <h2>${this.title} Nr. ${this.counter}!</h2>
-      <button @click=${this.__increment}>increment</button>
+      <h1>Please click 'confirm' when your telephone number is shown:</h1>
+      <p>Nr. ${this.randomValue}!</p>
+      <button @click=${this.__halt}>Confirm</button>
     `;
   }
 }
