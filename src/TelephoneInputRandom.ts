@@ -14,6 +14,8 @@ export class TelephoneInputRandom extends LitElement {
 
   @property({ type: String }) randomValue = '';
 
+  @property({ type: String }) format = '(dddd)-ddd-dddd';
+
   running: boolean;
 
   constructor() {
@@ -32,7 +34,15 @@ export class TelephoneInputRandom extends LitElement {
   }
 
   __generateNumber() {
-    this.randomValue = `${Math.random()}`;
+    const digits = this.format.split('').map(d => {
+      switch (d) {
+        case 'd':
+          return Math.floor(Math.random() * 10);
+        default:
+          return d;
+      }
+    });
+    this.randomValue = digits.join('');
   }
 
   __halt() {
@@ -44,7 +54,7 @@ export class TelephoneInputRandom extends LitElement {
     if (this.running) {
       return html`
         <h1>Please confirm your telephone number:</h1>
-        <p>My Telephone Number is: ${this.randomValue}!</p>
+        <p>My Telephone Number is: ${this.randomValue}</p>
         <button @click=${this.__halt}>Confirm</button>
       `;
     }
